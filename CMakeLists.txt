@@ -5,6 +5,8 @@
 #      $ cmake <PATH_TO_OPENCV_ROOT>
 #
 # ----------------------------------------------------------------------------
+message(STATUS "DEBUGG0: OPENCV_DUMP_HOOKS_FLOW: ${OPENCV_DUMP_HOOKS_FLOW}")
+message(STATUS "DEBUGG0: CMAKE_SYSROOT: ${CMAKE_SYSROOT}")
 
 # Disable in-source builds to prevent source tree corruption.
 if(" ${CMAKE_SOURCE_DIR}" STREQUAL " ${CMAKE_BINARY_DIR}")
@@ -87,6 +89,7 @@ if(DEFINED OPENCV_CMAKE_HOOKS_DIR)
   endforeach()
 endif()
 
+message(STATUS "DEBUGG0-1: CMAKE_SYSROOT: ${CMAKE_SYSROOT}")
 ocv_cmake_hook(CMAKE_INIT)
 
 # must go before the project()/enable_language() commands
@@ -94,21 +97,28 @@ ocv_update(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "Configs" FORC
 if(DEFINED CMAKE_BUILD_TYPE)
   set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "${CMAKE_CONFIGURATION_TYPES}")
 endif()
-
+message(STATUS "DEBUGG0-2: CMAKE_SYSROOT: ${CMAKE_SYSROOT}")
 option(ENABLE_PIC "Generate position independent code (necessary for shared libraries)" TRUE)
 set(CMAKE_POSITION_INDEPENDENT_CODE ${ENABLE_PIC})
 
+message(STATUS "DEBUGG0-3: CMAKE_SYSROOT: ${CMAKE_SYSROOT}")
 ocv_cmake_hook(PRE_CMAKE_BOOTSTRAP)
 
 # Bootstap CMake system: setup CMAKE_SYSTEM_NAME and other vars
+message(STATUS "DEBUGG0-3-1: CMAKE_SYSROOT: ${CMAKE_SYSROOT}")
 if(OPENCV_WORKAROUND_CMAKE_20989)
+  message(STATUS "DEBUGG0-3-2: CMAKE_SYSROOT: ${CMAKE_SYSROOT}")
   set(CMAKE_SYSTEM_PROCESSOR_BACKUP ${CMAKE_SYSTEM_PROCESSOR})
 endif()
-enable_language(CXX C)
+message(STATUS "DEBUGG0-3-3: CMAKE_SYSROOT: ${CMAKE_SYSROOT}")
+# enable_language(CXX C)
+message(STATUS "DEBUGG0-3-4: CMAKE_SYSROOT: ${CMAKE_SYSROOT}")
 if(OPENCV_WORKAROUND_CMAKE_20989)
+  message(STATUS "DEBUGG0-3-5: CMAKE_SYSROOT: ${CMAKE_SYSROOT}")
   set(CMAKE_SYSTEM_PROCESSOR ${CMAKE_SYSTEM_PROCESSOR_BACKUP})
 endif()
 
+message(STATUS "DEBUGG0-4: CMAKE_SYSROOT: ${CMAKE_SYSROOT}")
 ocv_cmake_hook(POST_CMAKE_BOOTSTRAP)
 
 if(NOT OPENCV_SKIP_CMAKE_SYSTEM_FILE)
@@ -131,22 +141,24 @@ if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)  # https://cmake.org/cmake/help/
   endif()
 endif()
 
+message(STATUS "DEBUGG0-0-5: CMAKE_SYSROOT: ${CMAKE_SYSROOT}")
 enable_testing()
-
+message(STATUS "DEBUGG0-0-6: CMAKE_SYSROOT: ${CMAKE_SYSROOT}")
 project(OpenCV CXX C)
-
+message(STATUS "DEBUGG0-0-7: CMAKE_SYSROOT: ${CMAKE_SYSROOT}")
 if(MSVC)
   set(CMAKE_USE_RELATIVE_PATHS ON CACHE INTERNAL "" FORCE)
 endif()
-
+message(STATUS "DEBUGG0-0-8: CMAKE_SYSROOT: ${CMAKE_SYSROOT}")
 ocv_cmake_eval(DEBUG_PRE ONCE)
-
+message(STATUS "DEBUGG0-0-9: CMAKE_SYSROOT: ${CMAKE_SYSROOT}")
 ocv_clear_vars(OpenCVModules_TARGETS)
-
+message(STATUS "DEBUGG0-0-10: CMAKE_SYSROOT: ${CMAKE_SYSROOT}")
 include(cmake/OpenCVDownload.cmake)
-
+message(STATUS "DEBUGG0-0-11: CMAKE_SYSROOT: ${CMAKE_SYSROOT}")
 set(BUILD_LIST "" CACHE STRING "Build only listed modules (comma-separated, e.g. 'videoio,dnn,ts')")
-
+message(STATUS "DEBUGG0-0-12: CMAKE_SYSROOT: ${CMAKE_SYSROOT}")
+message(STATUS "DEBUGG1: CMAKE_SYSROOT: ${CMAKE_SYSROOT}")
 # ----------------------------------------------------------------------------
 # Break in case of popular CMake configuration mistakes
 # ----------------------------------------------------------------------------
@@ -203,6 +215,7 @@ if(MINGW)
   endif()
 endif()
 
+message(STATUS "DEBUGG2: CMAKE_SYSROOT: ${CMAKE_SYSROOT}")
 # ----------------------------------------------------------------------------
 # OpenCV cmake options
 # ----------------------------------------------------------------------------
@@ -447,6 +460,7 @@ OCV_OPTION(WITH_ONNX "Include Microsoft ONNX Runtime support" OFF
   VISIBLE_IF TRUE
   VERIFY HAVE_ONNX)
 
+message(STATUS "DEBUGG3: CMAKE_SYSROOT: ${CMAKE_SYSROOT}")
 # OpenCV build components
 # ===================================================
 OCV_OPTION(BUILD_SHARED_LIBS        "Build shared libraries (.dll/.so) instead of static ones (.lib/.a)" NOT (ANDROID OR APPLE_FRAMEWORK) )
@@ -536,6 +550,7 @@ ocv_cmake_hook(POST_OPTIONS)
 # ----------------------------------------------------------------------------
 #  Build & install layouts
 # ----------------------------------------------------------------------------
+message(STATUS "DEBUGG4: CMAKE_SYSROOT: ${CMAKE_SYSROOT}")
 
 if(OPENCV_TEST_DATA_PATH)
   get_filename_component(OPENCV_TEST_DATA_PATH ${OPENCV_TEST_DATA_PATH} ABSOLUTE)
@@ -604,7 +619,7 @@ elseif(NOT DEFINED OPENCV_VCSVERSION)
   set(OPENCV_VCSVERSION "unknown")
 endif()
 
-
+message(STATUS "DEBUGG5: CMAKE_SYSROOT: ${CMAKE_SYSROOT}")
 # ----------------------------------------------------------------------------
 # OpenCV compiler and linker options
 # ----------------------------------------------------------------------------
@@ -693,6 +708,7 @@ include(cmake/OpenCVModule.cmake)
 # ----------------------------------------------------------------------------
 #  Detect endianness of build platform
 # ----------------------------------------------------------------------------
+message(STATUS "DEBUGG6: CMAKE_SYSROOT: ${CMAKE_SYSROOT}")
 
 if(IOS)
   # test_big_endian needs try_compile, which doesn't work for iOS
@@ -762,6 +778,7 @@ if(ENABLE_FLAKE8 AND PYTHON_DEFAULT_AVAILABLE)
   endif()
 endif()
 
+message(STATUS "DEBUGG7: CMAKE_SYSROOT: ${CMAKE_SYSROOT}")
 
 if(ANDROID AND ANDROID_EXECUTABLE AND ANT_EXECUTABLE AND (ANT_VERSION VERSION_GREATER 1.7) AND (ANDROID_TOOLS_Pkg_Revision GREATER 13))
   SET(CAN_BUILD_ANDROID_PROJECTS TRUE)
@@ -811,6 +828,7 @@ if(WITH_ONNX)
   include(cmake/FindONNX.cmake)
 endif()
 
+message(STATUS "DEBUGG8: CMAKE_SYSROOT: ${CMAKE_SYSROOT}")
 # ----------------------------------------------------------------------------
 # OpenCV HAL
 # ----------------------------------------------------------------------------
@@ -875,6 +893,7 @@ configure_file("${OpenCV_SOURCE_DIR}/cmake/templates/custom_hal.hpp.in" "${CMAKE
 unset(_hal_includes)
 
 
+message(STATUS "DEBUGG9: CMAKE_SYSROOT: ${CMAKE_SYSROOT}")
 # ----------------------------------------------------------------------------
 # Code trace support
 # ----------------------------------------------------------------------------
@@ -932,6 +951,7 @@ endif()
 # ----------------------------------------------------------------------------
 # Finalization: generate configuration-based files
 # ----------------------------------------------------------------------------
+message(STATUS "DEBUGG10: CMAKE_SYSROOT: ${CMAKE_SYSROOT}")
 
 ocv_cmake_hook(PRE_FINALIZE)
 
@@ -1022,6 +1042,7 @@ endif()
 # Summary:
 # ----------------------------------------------------------------------------
 status("")
+message(STATUS "DEBUGG11: CMAKE_SYSROOT: ${CMAKE_SYSROOT}")
 status("General configuration for OpenCV ${OPENCV_VERSION} =====================================")
 if(OPENCV_VCSVERSION)
   status("  Version control:" ${OPENCV_VCSVERSION})
